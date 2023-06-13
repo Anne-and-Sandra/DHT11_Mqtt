@@ -99,10 +99,27 @@ void loop() {
   Serial.print(dht.readTemperature());
   Serial.println(" Degrees Celsius");
 
+  //Battery Voltage
+  uint16_t vbat;
+  fona.getBattVoltage(&vbat);
+  Serial.print(F("VBat = ")); 
+  Serial.print(vbat); 
+  Serial.println(F("mV"));
+  float bat = vbat;
+
+  //Battery percentage
+  fona.getBattPercent(&vbat);
+  Serial.print(F("VPct = ")); 
+  Serial.print(vbat); 
+  Serial.println(F("%"));
+  float batP = vbat;
+
 // Create a JSON object and serialize the data
   StaticJsonDocument<256> jsonDoc;
   jsonDoc["temperature"]= dht.readTemperature();
   jsonDoc["humidity"]= dht.readHumidity();
+  jsonDoc["volt"]= bat;
+  jsonDoc["percentage"]= batP;
   
   //Serialize the JSON object to a string
   String jsonString;
